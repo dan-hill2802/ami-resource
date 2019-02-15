@@ -15,11 +15,11 @@ export AWS_ROLE_ARN=$(jq -r '.source.aws_role_arn // empty' /tmp/input)
 
 # if role arn has been provided, assume role
 if ! [ -z "$AWS_ROLE_ARN" ]; then
-    read AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN <<< \
-    $( aws sts assume-role \
-      --role-arn $AWS_ROLE_ARN \
-      --role-session-name ci \
-      --output json  | jq --raw-output '.Credentials.AccessKeyId + " " + .Credentials.SecretAccessKey + " " + .Credentials.SessionToken')
+read AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN <<< \
+$( aws sts assume-role \
+  --role-arn $AWS_ROLE_ARN \
+  --role-session-name ci \
+  --output json  | jq --raw-output '.Credentials.AccessKeyId + " " + .Credentials.SecretAccessKey + " " + .Credentials.SessionToken')
 fi
 
 # remove any empty credentials vars so the AWS client will try instance profiles
